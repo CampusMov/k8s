@@ -6,6 +6,8 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: "gce"
     kubernetes.io/ingress.global-static-ip-name: "uniride-static-ip"
+    networking.gke.io/health-check-path: "/actuator/health"
+    networking.gke.io/health-check-port: "9300"
 spec:
   rules:
     - http:
