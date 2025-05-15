@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: profile-service
-          image: jhosepmyr/profile-service:1.0.0
+          image: jhosepmyr/profile-service:1.1.0
           imagePullPolicy: Always
           resources:
             requests:
