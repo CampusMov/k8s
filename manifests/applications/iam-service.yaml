@@ -51,13 +51,6 @@ spec:
               value: "erich56000@gmail.com"
             - name: EMAIL_PASS
               value: "bgwq uznp pxgy scaw"
-          readinessProbe:
-            httpGet:
-              path: /actuator/health
-              port: 9300
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            failureThreshold: 3
 
 ---
 
@@ -69,9 +62,10 @@ metadata:
   labels:
     app: iam-service
 spec:
+    type: LoadBalancer
     selector:
       app: iam-service
     ports:
       - protocol: TCP
-        port: 9300
+        port: 80
         targetPort: 9300
