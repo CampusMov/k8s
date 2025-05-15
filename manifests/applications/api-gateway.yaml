@@ -28,6 +28,9 @@ spec:
               cpu: "500m"
           ports:
             - containerPort: 8765
+          env:
+            - name: EUREKA_SERVER_HOST
+              value: naming-service
 
 ---
 
