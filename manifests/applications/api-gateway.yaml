@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: api-gateway
-          image: jhosepmyr/api-gateway:1.0.1
+          image: jhosepmyr/api-gateway:1.0.2
           imagePullPolicy: Always
           resources:
             requests:
