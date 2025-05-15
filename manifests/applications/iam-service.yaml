@@ -51,8 +51,12 @@ spec:
               value: "erich56000@gmail.com"
             - name: EMAIL_PASS
               value: "bgwq uznp pxgy scaw"
-            - name: EUREKA_SERVER_HOST
-              value: http://naming-service
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 9300
+            initialDelaySeconds: 10
+            periodSeconds: 5
 
 ---
 
