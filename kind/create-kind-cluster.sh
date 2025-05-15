@@ -1,0 +1,1 @@
+kind create cluster --name uni-ride --image kindest/node:v1.29.2 --config kind-config.yaml
