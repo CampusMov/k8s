@@ -52,7 +52,7 @@ spec:
             - name: EMAIL_PASS
               value: "bgwq uznp pxgy scaw"
             - name: EUREKA_SERVER_HOST
-              value: naming-service
+              value: http://naming-service
 
 ---
 

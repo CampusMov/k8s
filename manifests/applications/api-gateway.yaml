@@ -30,7 +30,7 @@ spec:
             - containerPort: 8765
           env:
             - name: EUREKA_SERVER_HOST
-              value: naming-service
+              value: http://naming-service
 
 ---
 
