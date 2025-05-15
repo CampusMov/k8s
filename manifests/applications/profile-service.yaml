@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: profile-service
+  namespace: uni-ride
+  labels:
+    app: profile-service
+spec:
+  selector:
+    matchLabels:
+      app: profile-service
+  template:
+    metadata:
+      labels:
+        app: profile-service
+    spec:
+      containers:
+        - name: profile-service
+          image: jhosepmyr/profile-service:1.0.0
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "200m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+          ports:
+            - containerPort: 9300
+          env:
+            - name: DB_HOST
+              value: profile-database
+            - name: DB_PORT
+              value: "3325"
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: profile-database-secrets
+                  key: mysql_db
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: profile-database-secrets
+                  key: mysql_user
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: profile-database-secrets
+                  key: mysql_password
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: profile-service
+  namespace: uni-ride
+  labels:
+    app: profile-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: profile-service
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9300
