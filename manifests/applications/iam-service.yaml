@@ -68,15 +68,10 @@ metadata:
   namespace: uni-ride
   labels:
     app: iam-service
-  annotations:
-    networking.gke.io/health-check-path: "/actuator/health"
-    networking.gke.io/health-check-port: "9300"
 spec:
-  type: LoadBalancer
-  loadBalancerIP: 34.54.62.226
-  selector:
-    app: iam-service
-  ports:
-    - name: http
-      port: 80           # clients talk to port 80
-      targetPort: 9300
+    selector:
+      app: iam-service
+    ports:
+      - protocol: TCP
+        port: 9300
+        targetPort: 9300
