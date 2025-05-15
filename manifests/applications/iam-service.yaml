@@ -47,6 +47,10 @@ spec:
                 secretKeyRef:
                   name: iam-database-secrets
                   key: mysql_password
+            - name: EMAIL_USER
+              value: "erich56000@gmail.com"
+            - name: EMAIL_PASS
+              value: "bgwq uznp pxgy scaw"
 
 ---
 
