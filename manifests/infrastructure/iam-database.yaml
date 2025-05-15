@@ -89,7 +89,7 @@ metadata:
 spec:
   ports:
     - name: iam-database
-      port: 3303
+      port: 3325
       protocol: TCP
       targetPort: 3306
   selector:
