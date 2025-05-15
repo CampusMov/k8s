@@ -64,4 +64,4 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 9300
+      targetPort: 9200
