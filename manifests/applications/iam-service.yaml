@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: iam-service
-          image: jhosepmyr/iam-service:1.0.1
+          image: jhosepmyr/uni-ride_iam-service:1.0.0
           imagePullPolicy: Always
           resources:
             requests:
