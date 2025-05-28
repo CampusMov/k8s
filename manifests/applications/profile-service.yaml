@@ -58,7 +58,6 @@ metadata:
   labels:
     app: profile-service
 spec:
-  type: LoadBalancer
   selector:
     app: profile-service
   ports:

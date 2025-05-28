@@ -62,7 +62,6 @@ metadata:
   labels:
     app: iam-service
 spec:
-    type: LoadBalancer
     selector:
       app: iam-service
     ports:
