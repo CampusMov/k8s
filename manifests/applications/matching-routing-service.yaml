@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: matching-routing-service
+  namespace: uni-ride
+  labels:
+    app: matching-routing-service
+spec:
+  selector:
+    matchLabels:
+      app: matching-routing-service
+  template:
+    metadata:
+      labels:
+        app: matching-routing-service
+    spec:
+      containers:
+        - name: matching-routing-service
+          image: jhosepmyr/uni-ride_matching-routing-service:1.1.0
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "200m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+          ports:
+            - containerPort: 9100
+          env:
+            - name: DB_HOST
+              value: routing-matching-database
+            - name: DB_PORT
+              value: "3325"
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: routing-matching-database-secrets
+                  key: mysql_db
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: routing-matching-database-secrets
+                  key: mysql_user
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: routing-matching-database-secrets
+                  key: mysql_password
+            - name: KAFKA_BROKER_HOST
+              value: broker.kafka.svc.cluster.local
+            - name: KAFKA_BROKER_PORT
+              value: "9092"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: matching-routing-service
+  namespace: uni-ride
+  labels:
+    app: matching-routing-service
+spec:
+  selector:
+    app: matching-routing-service
+  ports:
+    - protocol: TCP
+      port: 9100
+      targetPort: 9100
