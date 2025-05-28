@@ -41,3 +41,18 @@ spec:
             path:
               type: ReplacePrefixMatch
               replacePrefixMatch: /
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /profile-service
+      backendRefs:
+        - group: ""
+          kind: Service
+          name: profile-service
+          port: 9200
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /
