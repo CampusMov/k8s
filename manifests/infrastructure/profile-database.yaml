@@ -122,6 +122,3 @@ metadata:
   namespace: uni-ride
   labels:
     app: profile-database
-data:
-  init.sql: |
-    CREATE DATABASE IF NOT EXISTS identity_access_management_service;
