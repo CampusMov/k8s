@@ -56,3 +56,48 @@ spec:
             path:
               type: ReplacePrefixMatch
               replacePrefixMatch: /
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /analytics-service
+      backendRefs:
+        - group: ""
+          kind: Service
+          name: analytics-service
+          port: 9800
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /reputation-incentives-service
+      backendRefs:
+        - group: ""
+          kind: Service
+          name: reputation-incentives-service
+          port: 9600
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /in-trip-communication-service
+      backendRefs:
+        - group: ""
+          kind: Service
+          name: in-trip-communication-service
+          port: 9400
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /
