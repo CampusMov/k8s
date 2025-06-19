@@ -47,6 +47,10 @@ spec:
                 secretKeyRef:
                   name: profile-database-secrets
                   key: mysql_password
+            - name: KAFKA_HOST
+              value: broker.kafka.svc.cluster.local
+            - name: KAFKA_PORT
+              value: "29092"
 
 ---
 
