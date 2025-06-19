@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: analytics-service
+  namespace: uni-ride
+  labels:
+    app: analytics-service
+spec:
+  selector:
+    matchLabels:
+      app: analytics-service
+  template:
+    metadata:
+      labels:
+        app: analytics-service
+    spec:
+      containers:
+        - name: analytics-service
+          image: jhosepmyr/uni-ride_analytics-service:1.0.0
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "200m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+          ports:
+            - containerPort: 9800
+          env:
+            - name: DB_HOST
+              value: analytics-database
+            - name: DB_PORT
+              value: "3325"
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: analytics-database-secrets
+                  key: mysql_db
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: analytics-database-secrets
+                  key: mysql_user
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: analytics-database-secrets
+                  key: mysql_password
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: analytics-service
+  namespace: uni-ride
+  labels:
+    app: analytics-service
+spec:
+  selector:
+    app: analytics-service
+  ports:
+    - protocol: TCP
+      port: 9800
+      targetPort: 9800
