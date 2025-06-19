@@ -101,3 +101,18 @@ spec:
             path:
               type: ReplacePrefixMatch
               replacePrefixMatch: /
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /matching-routing-service
+      backendRefs:
+        - group: ""
+          kind: Service
+          name: matching-routing-service
+          port: 9100
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /
