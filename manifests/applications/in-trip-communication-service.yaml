@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: in-trip-communication-service
+  namespace: uni-ride
+  labels:
+    app: in-trip-communication-service
+spec:
+  selector:
+    matchLabels:
+      app: in-trip-communication-service
+  template:
+    metadata:
+      labels:
+        app: in-trip-communication-service
+    spec:
+      containers:
+        - name: in-trip-communication-service
+          image: jhosepmyr/uni-ride_in-trip-communication-service:1.0.0
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "200m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+          ports:
+            - containerPort: 9400
+          env:
+            - name: DB_HOST
+              value: in-trip-communication-database
+            - name: DB_PORT
+              value: "3325"
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: in-trip-communication-database-secrets
+                  key: mysql_db
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: in-trip-communication-database-secrets
+                  key: mysql_user
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: in-trip-communication-database-secrets
+                  key: mysql_password
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: in-trip-communication-service
+  namespace: uni-ride
+  labels:
+    app: in-trip-communication-service
+spec:
+  selector:
+    app: in-trip-communication-service
+  ports:
+    - protocol: TCP
+      port: 9400
+      targetPort: 9400
