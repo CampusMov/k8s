@@ -1,0 +1,124 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: in-trip-communication-database
+  namespace: uni-ride
+spec:
+  selector:
+    matchLabels:
+      app: in-trip-communication-database
+  serviceName: in-trip-communication-database
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: in-trip-communication-database
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:9.2.0
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "200m"
+              memory: "1Gi"
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: in-trip-communication-database-secrets
+                  key: mysql_db
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: in-trip-communication-database-secrets
+                  key: mysql_user
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: in-trip-communication-database-secrets
+                  key: mysql_password
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: in-trip-communication-database-secrets
+                  key: mysql_root_password
+          volumeMounts:
+            - mountPath: /docker-entrypoint-initdb.d
+              name: in-trip-communication-database-init-db
+            - mountPath: /var/lib/mysql
+              name: in-trip-communication-database-data
+              subPath: in-trip-communication-database_management
+      volumes:
+        - name: in-trip-communication-database-init-db
+          configMap:
+            name: in-trip-communication-database-init-db-configmap
+        - name: in-trip-communication-database-data
+          persistentVolumeClaim:
+            claimName: in-trip-communication-database-pvc
+
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: in-trip-communication-database-secrets
+  namespace: uni-ride
+data:
+  mysql_db: c3RhZmZfbWFuYWdlbWVudA==
+  mysql_password: cGFzc3dvcmQxMjM=
+  mysql_root_password: cGFzc3dvcmQxMjM0NQ==
+  mysql_user: amhvc2VwbXly
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: in-trip-communication-database
+  namespace: uni-ride
+  labels:
+    app: in-trip-communication-database
+spec:
+  ports:
+    - name: in-trip-communication-database
+      port: 3306
+      protocol: TCP
+      targetPort: 3306
+  selector:
+    app: in-trip-communication-database
+  type: ClusterIP
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: in-trip-communication-database-pvc
+  namespace: uni-ride
+  labels:
+    app: in-trip-communication-database
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 0.1Gi
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: in-trip-communication-database-init-db-configmap
+  namespace: uni-ride
+  labels:
+    app: in-trip-communication-database-init-db
