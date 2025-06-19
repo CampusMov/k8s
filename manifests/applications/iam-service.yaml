@@ -51,6 +51,10 @@ spec:
               value: "erich56000@gmail.com"
             - name: EMAIL_PASS
               value: "bgwq uznp pxgy scaw"
+            - name: KAFKA_HOST
+              value: broker.kafka.svc.cluster.local
+            - name: KAFKA_PORT
+              value: "29092"
 
 ---
 
