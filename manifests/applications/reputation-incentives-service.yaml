@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reputation-incentives-service
+  namespace: uni-ride
+  labels:
+    app: reputation-incentives-service
+spec:
+  selector:
+    matchLabels:
+      app: reputation-incentives-service
+  template:
+    metadata:
+      labels:
+        app: reputation-incentives-service
+    spec:
+      containers:
+        - name: reputation-incentives-service
+          image: jhosepmyr/uni-ride_reputation-incentives-service:1.0.0
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "200m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+          ports:
+            - containerPort: 9600
+          env:
+            - name: DB_HOST
+              value: reputation-incentives-database
+            - name: DB_PORT
+              value: "3325"
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: reputation-incentives-database-secrets
+                  key: mysql_db
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: reputation-incentives-database-secrets
+                  key: mysql_user
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: reputation-incentives-database-secrets
+                  key: mysql_password
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: reputation-incentives-service
+  namespace: uni-ride
+  labels:
+    app: reputation-incentives-service
+spec:
+  selector:
+    app: reputation-incentives-service
+  ports:
+    - protocol: TCP
+      port: 9600
+      targetPort: 9600
