@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: profile-service
-          image: jhosepmyr/uni-ride_profile-service:1.2.0
+          image: jhosepmyr/uni-ride_profile-service:1.2.0-test
           imagePullPolicy: Always
           resources:
             requests:
